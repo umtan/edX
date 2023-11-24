@@ -1,0 +1,51 @@
+
+# import libraries
+import numpy as np
+import matplotlib 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('C:\\Users\\urmim\\OneDrive\\Desktop\\BusinessAnalyst\\Portfolio\\EDX.csv')
+df.head()
+
+#  plot a line graph in Python for the above problem on "Participants"  with "Institutions" 
+
+
+# Convert the "Year" column to datetime objects
+df['Launch Date'] = pd.to_datetime(df['Launch Date'])
+
+# Extract the year part from the datetime objects
+df['Launch Date'] = df['Launch Date'].dt.year
+
+# Filter the data for "MIT" and "Harvard" separately
+mit_data = df[df['Institution'] == 'MITx']
+harvard_data = df[df['Institution'] == 'HarvardX']
+
+# Group the data by year and calculate the sum of participants for each institution
+mit_participants_by_year = mit_data.groupby('Launch Date')['Participants (Course Content Accessed)'].sum()
+harvard_participants_by_year = harvard_data.groupby('Launch Date')['Participants (Course Content Accessed)'].sum()
+
+# Plot the data as line graphs with different colors
+plt.figure(figsize=(10, 6))  # Adjust the figure size as needed
+
+# Setting the default axis scaling to 'auto' for both x and y axes
+#plt.autoscale(enable=True, axis='both', tight=True)
+
+# Setting  the desired x-axis and y-axis limits 
+# Adjusting the starting and ending year as needed
+plt.xlim(2010, max(df['Launch Date'])) 
+#plt.xlim(2010, 2016)  
+plt.ylim(10000, max(mit_participants_by_year.max(), harvard_participants_by_year.max()) + 1000)
+
+plt.plot(mit_participants_by_year.index, mit_participants_by_year.values, label='MITx', color='blue')
+plt.plot(harvard_participants_by_year.index, harvard_participants_by_year.values, label='HarvardX', color='red')
+
+# Add labels and a legend
+plt.xlabel('Launch Date')
+plt.ylabel('Participants (Course Content Accessed)')
+plt.title('Participants by Year and Institution')
+plt.legend()
+
+# Show the plot
+plt.grid(True)
+plt.show()
