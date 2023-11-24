@@ -1,0 +1,94 @@
+# import libraries
+import numpy as np
+import matplotlib 
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv('C:\\Users\\urmim\\OneDrive\\Desktop\\BusinessAnalyst\\Portfolio\\EDX.csv')
+df.head()
+
+ # To find Distict courses run by EDX
+ 
+df['Course Subject'].unique()
+ # To find Number of Distinct course run by EDX
+distinct_row_count = df['Course Title'].nunique()
+# Print the number of unique rows
+print( distinct_row_count)
+
+# To find Number of Distinct course run by  each of  the Institutions "MIT" nad "Harvard" 
+
+# Filter the data for 'MIT' and 'Harvard' institutions
+mit_data = df[df['Institution'] == 'MITx']
+harvard_data = df[df['Institution'] =='HarvardX']
+
+# Count the number of distinct course titles for each institution
+mit_courses_count = mit_data['Course Title'].nunique()
+harvard_courses_count = harvard_data['Course Title'].nunique()
+
+# Print the counts for 'MIT' and 'Harvard'
+print("Number of distinct courses at MIT:", mit_courses_count)
+print("Number of distinct courses at Harvard:", harvard_courses_count)
+# Calculate the sum of the total "Participants"
+total_participants = df['Participants (Course Content Accessed)'].sum()
+# Print the total sum of participants 
+print("Total Participants:", total_participants)
+# Calculate the sum of the total "Participants" in the year 2012,2013,2014,2015,2016
+
+# Convert the Launch Date column to datetime objects
+df['Launch Date'] = pd.to_datetime(df['Launch Date'])
+
+# Extract the year part from the datetime objects
+df['Launch Date'] = df['Launch Date'].dt.year
+
+# Filter the data for the years 2012, 2013, and 2014, 2015,2016
+filtered_data_2012 = df[df['Launch Date'].isin([2012])]
+filtered_data_2013 = df[df['Launch Date'].isin([2013])]
+filtered_data_2014 = df[df['Launch Date'].isin([2014])]
+filtered_data_2015 = df[df['Launch Date'].isin([2015])]
+filtered_data_2016 = df[df['Launch Date'].isin([2016])]
+
+# Calculate the distinct count of "Participants" for the filtered data
+distinct_participants_count_12 = filtered_data_2012['Participants (Course Content Accessed)'].sum()
+distinct_participants_count_13 = filtered_data_2013['Participants (Course Content Accessed)'].sum()
+distinct_participants_count_14 = filtered_data_2014['Participants (Course Content Accessed)'].sum()
+distinct_participants_count_15 = filtered_data_2015['Participants (Course Content Accessed)'].sum()
+distinct_participants_count_16 = filtered_data_2016['Participants (Course Content Accessed)'].sum()
+
+# Print the distinct count of participants for the specified years
+print("Total Students tegisterted in 2012 is: ", distinct_participants_count_12) 
+print("Total Students tegisterted in 2013 is: ", distinct_participants_count_13)
+print("Total Students tegisterted in 2014 is: ", distinct_participants_count_14)
+print("Total Students tegisterted in 2015 is: ", distinct_participants_count_15)
+print("Total Students tegisterted in 2016 is: ", distinct_participants_count_16)
+
+# Calculate the sum of the total "Participants"  for the course subject "Science, Technology, Engineering, and Mathematics"
+
+STEM_data = df[df['Course Subject'] == 'Science, Technology, Engineering, and Mathematics']
+STEM_participient_count = STEM_data['Participants (Course Content Accessed)'].sum()
+print(STEM_participient_count)
+
+# Calculate the sum of the total "Participants" of MITx for the course subject "computer science" in 2012
+
+# Filter the data for MIT, Computer Science, and the year 2012
+
+MIT_data_2012_cs = df[(df['Institution'] == 'MITx') & (df['Course Subject'] == 'Computer Science') & (df['Launch Date'] == 2012)]
+
+# Calculate the total number of participants for the filtered data
+MIT_participants_2012_cs = MIT_data_2012_cs['Participants (Course Content Accessed)'].sum()
+
+# Print the total number of participants
+print("Total participants from MIT in Computer Science in 2012:", MIT_participants_2012_cs)
+
+# Calculate total female participants in computer science at MIT
+
+female_data = df[(df['Course Subject'] == 'Computer Science') & (df['Institution'] == 'MITx')]
+
+female_participants_MIT_cs = female_data['Female_Total'].sum()
+
+# Print the total number of female participants at MIT with Computer Science
+print("Total Female  participants from MIT in Computer Science:", female_participants_MIT_cs)
+
+# Calculate total female participants in computer science at Harvard in 2014
+
+female_data = df[(df['Institution'] == 'HarvardX')  & (df['Course Subject'] == 'Computer Science') & (df['Launch Date'] == 2014)]
+female_participant = female_data['Female_Total'].sum()
+female_participant
