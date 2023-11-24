@@ -1,0 +1,38 @@
+# import libraries
+import numpy as np
+import matplotlib 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('C:\\Users\\urmim\\OneDrive\\Desktop\\BusinessAnalyst\\Portfolio\\EDX.csv')
+df.head()
+
+#  plot a histogram  in Python for the  problem on "Participants"  with "Institutions" with "Launch date"
+
+# Convert the "Year" column to datetime objects
+df['Launch Date'] = pd.to_datetime(df['Launch Date'])
+
+# Extract the year part from the datetime objects
+df['Launch Date'] = df['Launch Date'].dt.year
+#df['Launch Date']
+
+# Filter the data for "MIT" and "Harvard" separately
+mit_data = df[df['Institution'] == 'MITx']
+
+# Group the data by year and calculate the sum of participants for MIT institution
+mit_participants_by_years = mit_data.groupby('Launch Date')['Participants (Course Content Accessed)'].sum()
+
+# Create a histogram
+plt.figure(figsize=(10, 6))
+
+# Plot the histogram with the number of participants
+plt.hist(mit_participants_by_years.values, bins=10, color='blue', edgecolor='black')
+
+# Add labels and a title
+plt.xlabel('Number of Participants')
+plt.ylabel('Frequency')
+plt.title('Histogram of Participants at MIT by Year')
+
+# Show the plot
+plt.grid(True)
+plt.show()
