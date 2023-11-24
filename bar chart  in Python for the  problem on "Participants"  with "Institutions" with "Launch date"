@@ -1,0 +1,55 @@
+# import libraries
+import numpy as np
+import matplotlib 
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('C:\\Users\\urmim\\OneDrive\\Desktop\\BusinessAnalyst\\Portfolio\\EDX.csv')
+df.head()
+
+#  plot a bar chart  in Python for the  problem on "Participants"  with "Institutions" with "Launch date"
+
+# Convert the "Year" column to datetime objects
+df['Launch Date'] = pd.to_datetime(df['Launch Date'])
+
+# Extract the year part from the datetime objects
+df['Launch Date'] = df['Launch Date'].dt.year
+#df['Launch Date']
+
+# Filter the data for "MIT" and "Harvard" separately
+mit_data = df[df['Institution'] == 'MITx']
+harvard_data = df[df['Institution'] == 'HarvardX']
+
+# Group the data by year and calculate the sum of participants for each institution
+mit_participants_by_years = mit_data.groupby('Launch Date')['Participants (Course Content Accessed)'].sum()
+harvard_participants_by_years = harvard_data.groupby('Launch Date')['Participants (Course Content Accessed)'].sum()
+mit_participants_by_years
+harvard_participants_by_years
+harvard_participants_by_years.values
+
+# Plot the data as line graphs with different colors
+plt.figure(figsize=(10, 6))  
+
+# Bar width for each year
+bar_width = 0.35
+
+# Set the positions for the bars
+mit_years = mit_participants_by_years.index
+harvard_years = harvard_participants_by_years.index
+mit_years
+# Create bar plots for MIT and Harvard
+plt.bar(mit_years, mit_participants_by_years.values, bar_width, label='MIT', color='blue', alpha=0.7)
+plt.bar(harvard_years + bar_width, harvard_participants_by_years.values, bar_width, label='Harvard', color='red', alpha=0.7)
+
+# Add labels, a legend, and adjust the x-axis ticks
+plt.xlabel('Year')
+plt.ylabel('Participants')
+plt.title('Participants by Year and Institution')
+plt.xticks(mit_years + bar_width / 2, mit_years)
+
+# Show the legend
+plt.legend()
+
+# Show the plot
+plt.grid(True)
+plt.show()
